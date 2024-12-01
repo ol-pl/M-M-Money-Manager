@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dancing_script">Dancing Script</string>
+    <string name="noto_sans_javanese">Noto Sans Javanese</string>
+    <string name="noto_serif_ahom">NotoSerifAhom</string>
+    <string name="oswald">Oswald</string>
+    <string name="playfair_display">PlayfairDisplay</string>
+    <string name="poppins">Poppins</string>
+    <string name="roboto">Roboto</string>
+    <string name="yuji_main">YujiMain</string>
+</resources>

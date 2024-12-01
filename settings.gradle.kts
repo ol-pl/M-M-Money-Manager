@@ -22,3 +22,7 @@ dependencyResolutionManagement {
 rootProject.name = "Money manager"
 include(":app")
 include(":core:core-presentation")
+include(":settings:settings-presentation")
+include(":settings:settings-domain")
+include(":settings:settings-data")
+include(":core:core-utils")

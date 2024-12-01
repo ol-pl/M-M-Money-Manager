@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="screen_title">Settings</string>
+    <string name="app_version">App version</string>
+    <string name="colors">Colors</string>
+    <string name="font">Font</string>
+    <string name="font_size">Font size</string>
+    <string name="color_mode">Color mode</string>
+    <string name="theme_tittle">Theme</string>
+    <string name="app_info_tittle">App info</string>
+
+    <string name="successfully_update">Successfully updated</string>
+</resources>

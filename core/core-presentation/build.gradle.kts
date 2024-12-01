@@ -3,8 +3,8 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     kotlin("plugin.serialization")
+    alias(libs.plugins.ksp)
 }
-
 android {
     namespace = "com.olpl.core_ui"
     compileSdk = rootProject.ext["compileSdk"] as Int
@@ -36,8 +36,20 @@ android {
 }
 
 dependencies {
+    //Modules
+    implementation(project(":core:core-utils"))
+
+    //Koin
+    implementation(libs.koin.androidx.compose)
+    implementation(libs.koin.android)
+    implementation(libs.koin.annotations)
+    ksp(libs.koin.ksp)
+
+    //Info bar
+    implementation(libs.info.bar.compose)
+
     //Navigation
-    implementation (libs.androidx.navigation.compose)
+    implementation(libs.androidx.navigation.compose)
 
     //Serialization
     implementation(libs.kotlinx.serialization.json)
@@ -46,4 +58,6 @@ dependencies {
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.material3)
     implementation(libs.androidx.ui)
+
+    implementation(libs.androidx.ui.tooling.preview)
 }

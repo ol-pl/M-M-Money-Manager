@@ -43,6 +43,15 @@ android {
 dependencies {
     //Modules
     implementation(project(":core:core-presentation"))
+    implementation(project(":settings:settings-presentation"))
+    implementation(project(":settings:settings-domain"))
+    implementation(project(":settings:settings-data"))
+
+    //Koin
+    implementation (libs.koin.androidx.compose)
+    implementation (libs.koin.android)
+    implementation (libs.koin.annotations)
+    ksp (libs.koin.ksp)
 
     //Navigation
     implementation (libs.androidx.navigation.compose)
