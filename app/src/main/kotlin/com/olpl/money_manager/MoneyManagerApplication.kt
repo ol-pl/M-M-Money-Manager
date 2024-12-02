@@ -1,7 +1,7 @@
 package com.olpl.money_manager
 
 import android.app.Application
-import com.olpl.core_ui.di.CorePresentationModule
+import com.olpl.core_presentation.di.CorePresentationModule
 import com.olpl.settings_data.di.SettingsDataModule
 import com.olpl.settings_domain.di.SettingsDomainModule
 import com.olpl.settings_presentation.di.SettingsPresentationModule

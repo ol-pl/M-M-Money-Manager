@@ -4,7 +4,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class SettingsDtoEntity(
-    val colorPaletteId: Int = 1,
+    val colorPaletteId: Int = 2,
     val colorMode: String = "Auto",
     val fontFamilyVariantId: Int = 1
 )

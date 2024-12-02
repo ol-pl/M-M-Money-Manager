@@ -1,21 +1,22 @@
 package com.olpl.settings_presentation.viewmodel
 
-import android.util.Log
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
-import com.olpl.core_ui.theme.util.ColorMode
-import com.olpl.core_ui.theme.util.FontFamilyVariants
-import com.olpl.core_ui.theme.util.PaletteVariants
-import com.olpl.core_ui.viewmodel.ViewModelExp
+import com.olpl.core_presentation.theme.util.ColorMode
+import com.olpl.core_presentation.theme.util.FontFamilyVariants
+import com.olpl.core_presentation.theme.util.PaletteVariants
+import com.olpl.core_presentation.viewmodel.ViewModelExp
 import com.olpl.settings_domain.usecase.SettingsUseCase
 import com.olpl.settings_presentation.R
 import com.olpl.settings_presentation.viewmodel.events.SettingsEvents
 import com.olpl.settings_presentation.viewmodel.events.SettingsUiEvents
 import com.olpl.utils.Responses
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.koin.android.annotation.KoinViewModel
 
@@ -23,14 +24,15 @@ import org.koin.android.annotation.KoinViewModel
 class SettingsViewModel(
     private val settingsUseCase: SettingsUseCase
 ) : ViewModelExp<SettingsEvents, SettingsUiEvents>() {
-    private val _colorMode = mutableStateOf<ColorMode>(ColorMode.Auto)
-    val colorMode: State<ColorMode> = _colorMode
+    private val _colorMode = MutableStateFlow<ColorMode>(ColorMode.Auto)
+    val colorMode: StateFlow<ColorMode> = _colorMode.asStateFlow()
 
-    private val _colorPalette = mutableStateOf<PaletteVariants>(PaletteVariants.P1)
-    val colorPalette: State<PaletteVariants> = _colorPalette
+    private val _colorPalette = MutableStateFlow<PaletteVariants>(PaletteVariants.P1)
+    val colorPalette: StateFlow<PaletteVariants> = _colorPalette.asStateFlow()
 
-    private val _fontFamilyVariants = mutableStateOf<FontFamilyVariants>(FontFamilyVariants.Roboto)
-    val fontFamilyVariants: State<FontFamilyVariants> = _fontFamilyVariants
+    private val _fontFamilyVariants =
+        MutableStateFlow<FontFamilyVariants>(FontFamilyVariants.Roboto)
+    val fontFamilyVariants: StateFlow<FontFamilyVariants> = _fontFamilyVariants.asStateFlow()
 
     init {
         launchSettingsObserver()
@@ -39,10 +41,18 @@ class SettingsViewModel(
     override fun onEvent(event: SettingsEvents) {
         when (event) {
             is SettingsEvents.SetColorMode -> {
+                setColorMode(event.colorMode)
             }
 
             is SettingsEvents.SetColorPalette -> TODO()
             is SettingsEvents.SetFont -> TODO()
+            SettingsEvents.GoBack -> {
+                sendUiEvent(SettingsUiEvents.GoBack)
+            }
+
+            SettingsEvents.OnColorModeCardClick -> {
+                sendUiEvent(SettingsUiEvents.OpenColorModeDialog)
+            }
         }
     }
 
@@ -82,9 +92,9 @@ class SettingsViewModel(
                 responses is Responses.Success
             } as? Responses.Success
             settingsData?.data?.collectLatest { newData ->
-                _colorMode.value = ColorMode.valueOf(newData.colorMode)
-                _colorPalette.value = PaletteVariants.getById(newData.colorPaletteId)
-                _fontFamilyVariants.value = FontFamilyVariants.getById(newData.fontFamilyVariantId)
+                _colorPalette.update { PaletteVariants.getById(newData.colorPaletteId) }
+                _colorMode.update { ColorMode.valueOf(newData.colorMode) }
+                _fontFamilyVariants.update { FontFamilyVariants.getById(newData.fontFamilyVariantId) }
             }
         }
     }

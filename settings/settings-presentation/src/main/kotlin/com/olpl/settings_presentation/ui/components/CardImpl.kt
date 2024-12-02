@@ -18,9 +18,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.olpl.core_ui.components.CardImpl
-import com.olpl.core_ui.components.TextImpl
-import com.olpl.core_ui.providers.LocalPaddings
+import com.olpl.core_presentation.components.ElevatedCardImpl
+import com.olpl.core_presentation.components.TextImpl
+import com.olpl.core_presentation.providers.LocalPaddings
 import com.olpl.utils.StringId
 
 @Composable
@@ -34,7 +34,7 @@ internal fun SettingsCardImpl(
     val paddings = LocalPaddings.current
     val configuration = LocalConfiguration.current
     val minCardHeight = (configuration.screenHeightDp * 0.075f).dp
-    CardImpl(
+    ElevatedCardImpl(
         enabled = enabled,
         onClick = onClick,
         modifier = Modifier

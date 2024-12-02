@@ -4,12 +4,19 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.lifecycle.ViewModelStoreOwner
-import com.olpl.core_ui.theme.MoneyManagerTheme
-import com.olpl.core_ui.theme.util.ColorMode
-import com.olpl.core_ui.util.Qualifiers
-import com.olpl.settings_presentation.ui.SettingsScreenRoot
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.olpl.core_presentation.navigation.MainDestinations
+import com.olpl.core_presentation.providers.LocalCurrentNavigator
+import com.olpl.core_presentation.providers.LocalMainNavigator
+import com.olpl.core_presentation.providers.util.currentNotNull
+import com.olpl.core_presentation.theme.MoneyManagerTheme
+import com.olpl.core_presentation.util.Qualifiers
+import com.olpl.settings_presentation.navigation.settingsGraph
+import com.olpl.settings_presentation.navigation.util.SettingsDestinations
 import com.olpl.settings_presentation.viewmodel.SettingsViewModel
 import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.koinInject
@@ -29,17 +36,34 @@ class MainActivity : ComponentActivity() {
             val settingsViewModel = koinViewModel<SettingsViewModel>(
                 viewModelStoreOwner = viewModelStoreOwner
             )
-            val colorMode = when (settingsViewModel.colorMode.value) {
-                ColorMode.Auto -> isSystemInDarkTheme()
-                ColorMode.Dark -> true
-                ColorMode.Light -> false
-            }
             MoneyManagerTheme(
-                darkTheme = colorMode,
-                paletteVariants = settingsViewModel.colorPalette.value,
-                fontFamilyVariants = settingsViewModel.fontFamilyVariants.value
+                colorModeState = settingsViewModel.colorMode,
+                paletteVariantsState = settingsViewModel.colorPalette,
+                fontFamilyVariantsState = settingsViewModel.fontFamilyVariants
             ) {
-                SettingsScreenRoot()
+                CompositionLocalProvider(
+                    LocalMainNavigator provides rememberNavController()
+                ) {
+                    val navController = LocalMainNavigator.currentNotNull()
+                    NavHost(
+                        navController = navController,
+                        startDestination = MainDestinations.Settings
+                    ) {
+                        composable<MainDestinations.Settings> {
+                            CompositionLocalProvider(
+                                LocalCurrentNavigator provides rememberNavController()
+                            ) {
+                                val currentNavController = LocalCurrentNavigator.currentNotNull()
+                                NavHost(
+                                    navController = currentNavController,
+                                    startDestination = SettingsDestinations.SettingsScreen
+                                ) {
+                                    settingsGraph()
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
     }

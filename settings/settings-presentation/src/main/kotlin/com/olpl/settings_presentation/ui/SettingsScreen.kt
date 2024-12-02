@@ -15,12 +15,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.lifecycle.ViewModelStoreOwner
-import com.olpl.core_ui.components.TextImpl
-import com.olpl.core_ui.providers.LocalPaddings
-import com.olpl.core_ui.util.Qualifiers
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.olpl.core_presentation.components.TextImpl
+import com.olpl.core_presentation.providers.LocalPaddings
+import com.olpl.core_presentation.util.Qualifiers
 import com.olpl.settings_presentation.R
 import com.olpl.settings_presentation.ui.components.SettingsCardImpl
 import com.olpl.settings_presentation.viewmodel.SettingsViewModel
+import com.olpl.settings_presentation.viewmodel.events.SettingsEvents
 import com.olpl.utils.StringId
 import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.koinInject
@@ -63,14 +65,14 @@ internal fun SettingsScreen(paddingValues: PaddingValues) {
 
 private fun LazyListScope.colorTheme(settingsViewModel: SettingsViewModel) {
     item {
-        val colorPalette = settingsViewModel.colorPalette.value
+        val colorPalette = settingsViewModel.colorPalette.collectAsStateWithLifecycle()
         SettingsCardImpl(
             title = R.string.colors,
             onClick = {
 
             },
             rightText = {
-                TextImpl(text = colorPalette.title)
+                TextImpl(text = colorPalette.value.title)
             }
         )
     }
@@ -78,14 +80,14 @@ private fun LazyListScope.colorTheme(settingsViewModel: SettingsViewModel) {
 
 private fun LazyListScope.colorMode(settingsViewModel: SettingsViewModel) {
     item {
-        val colorMode = settingsViewModel.colorMode.value.name
+        val colorMode = settingsViewModel.colorMode.collectAsStateWithLifecycle()
         SettingsCardImpl(
             title = R.string.color_mode,
             onClick = {
-
+                settingsViewModel.onEvent(SettingsEvents.OnColorModeCardClick)
             },
             rightText = {
-                TextImpl(text = colorMode)
+                TextImpl(text = colorMode.value.name)
             }
         )
     }
@@ -93,14 +95,14 @@ private fun LazyListScope.colorMode(settingsViewModel: SettingsViewModel) {
 
 private fun LazyListScope.font(settingsViewModel: SettingsViewModel) {
     item {
-        val font = settingsViewModel.fontFamilyVariants.value
+        val font = settingsViewModel.fontFamilyVariants.collectAsStateWithLifecycle()
         SettingsCardImpl(
             title = R.string.font,
             onClick = {
 
             },
             rightText = {
-                TextImpl(text = font.title)
+                TextImpl(text = font.value.title)
             }
         )
     }

@@ -6,7 +6,7 @@ plugins {
     alias(libs.plugins.ksp)
 }
 android {
-    namespace = "com.olpl.core_ui"
+    namespace = "com.olpl.core_presentation"
     compileSdk = rootProject.ext["compileSdk"] as Int
 
     defaultConfig {

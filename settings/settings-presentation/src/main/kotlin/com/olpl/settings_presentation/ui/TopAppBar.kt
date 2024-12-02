@@ -8,7 +8,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import com.olpl.core_ui.components.TopAppBarImpl
+import com.olpl.core_presentation.components.TopAppBarImpl
 import com.olpl.settings_presentation.R
 
 @OptIn(ExperimentalMaterial3Api::class)
